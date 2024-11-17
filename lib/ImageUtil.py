@@ -58,3 +58,13 @@ def convert_image_to_pix(image):
     except Exception as e:
         print(f"An error occurred while converting the image to pixel list: {e}")
         return None
+
+
+def rotate_image(image, rotation_angle):
+    """Rotate the given image by the specified rotation angle."""
+    try:
+        rotated_image = image.rotate(rotation_angle, expand=True)
+        return rotated_image
+    except Exception as e:
+        print(f"An error occurred while rotating the image: {e}")
+        return None
