@@ -1,8 +1,8 @@
 import time
-from . import lcdconfig_old, ImageUtil
+from . import lcdconfig, ImageUtil
 
 
-class LCD_1inch69(lcdconfig.RaspberryPi):
+class LCD_1inch69(lcdconfig.OrangePi):
     width = 240
     height = 280
 

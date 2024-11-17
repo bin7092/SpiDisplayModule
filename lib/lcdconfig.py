@@ -21,7 +21,7 @@ class OrangePi:
         self.gpio_mode(self.DC_PIN, self.OUTPUT)
         self.BL_PIN = bl
         self.gpio_mode(self.BL_PIN, self.OUTPUT)
-        self.digital_write(self.BL_PIN, 0)
+        self.digital_write(self.BL_PIN, 1)
 
         #Initialize SPI
         self.SPI = spi
