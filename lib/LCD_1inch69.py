@@ -158,6 +158,7 @@ class LCD_1inch69(lcdconfig.OrangePi):
         """Set buffer to value of Python Imaging Library image."""
         """Write display buffer to physical display"""
         image = ImageUtil.scale_and_crop_image(image, self.width, self.height)
+        image = ImageUtil.rotate_image(image, 90)
         pix = ImageUtil.convert_image_to_pix(image)
         self.send_pixels_to_display(pix)
 
