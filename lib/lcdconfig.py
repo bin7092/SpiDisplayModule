@@ -3,11 +3,12 @@ import os
 import sys
 import time
 import spidev
+from smbus import SMBus
 import wiringpi
 
 
 class OrangePi:
-    def __init__(self, spi=spidev.SpiDev(4, 1), spi_freq=40000000, rst=10, dc=16, bl=13):
+    def __init__(self, spi=spidev.SpiDev(4, 1), spi_freq=40000000, rst=10, dc=16, bl=13, i2c=None):
         wiringpi.wiringPiSetup()
 
         self.INPUT = 0
@@ -23,11 +24,16 @@ class OrangePi:
         self.gpio_mode(self.BL_PIN, self.OUTPUT)
         self.digital_write(self.BL_PIN, 1)
 
-        #Initialize SPI
-        self.SPI = spi
-        if self.SPI != None:
-            self.SPI.max_speed_hz = spi_freq
-            self.SPI.mode = 0b00
+        self.SPI = None
+        if i2c is not None:
+            self.address = 0x3c
+            self.BUS = SMBus(i2c)
+        else:
+            # Initialize SPI
+            self.SPI = spi
+            if self.SPI != None:
+                self.SPI.max_speed_hz = spi_freq
+                self.SPI.mode = 0b00
 
     def gpio_mode(self, Pin, Mode):
         if Mode:
@@ -55,6 +61,9 @@ class OrangePi:
         if self.SPI != None:
             self.SPI.writebytes(data)
 
+    def i2c_writebyte(self, reg, value):
+        self.BUS.write_byte_data(self.address, reg, value)
+
     def module_init(self):
         if self.SPI != None:
             self.SPI.max_speed_hz = self.SPEED
@@ -65,6 +74,8 @@ class OrangePi:
         logging.debug("spi end")
         if self.SPI != None:
             self.SPI.close()
+        else:
+            self.BUS.close()
 
         logging.debug("gpio cleanup...")
         self.digital_write(self.RST_PIN, 1)
