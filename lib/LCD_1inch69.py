@@ -1,5 +1,5 @@
 import time
-from . import lcdconfig, ImageUtil
+from . import lcdconfig_old, ImageUtil
 
 
 class LCD_1inch69(lcdconfig.RaspberryPi):
